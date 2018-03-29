@@ -1,175 +1,177 @@
 {
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "3.1.1"
+  "overwrite": true,
+  "dashboard": {
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "3.1.1"
+      },
+      {
+        "type": "panel",
+        "id": "graph",
+        "name": "Graph",
+        "version": ""
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "singlestat",
+        "name": "Singlestat",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": []
     },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
-    }
-  ],
-  "annotations": {
-    "list": []
-  },
-  "description": "Ceph Pools overview.",
-  "editable": false,
-  "graphTooltip": 0,
-  "hideControls": false,
-  "id": null,
-  "links": [],
-  "refresh": "30s",
-  "rows": [
-    {
-      "collapse": true,
-      "height": "250px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "$datasource",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 4,
-          "grid": {},
-          "height": "",
-          "id": 2,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
+    "description": "Ceph Pools overview.",
+    "editable": false,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "id": null,
+    "links": [],
+    "refresh": "30s",
+    "rows": [
+      {
+        "collapse": true,
+        "height": "250px",
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "datasource": "$datasource",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 4,
+            "grid": {},
+            "height": "",
+            "id": 2,
+            "interval": "$interval",
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": true,
+              "max": true,
+              "min": true,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 0,
+            "links": [],
+            "nullPointMode": "connected",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [
+              {
+                "alias": "/^Total.*$/",
+                "fill": 0,
+                "linewidth": 4,
+                "stack": false
+              },
+              {
+                "alias": "/^Raw.*$/",
+                "color": "#BF1B00",
+                "fill": 0,
+                "linewidth": 4
+              }
+            ],
+            "span": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "ceph_pool_available_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Available - {{ pool }}",
+                "metric": "ceph_pool_available_bytes",
+                "refId": "A",
+                "step": 60
+              },
+              {
+                "expr": "ceph_pool_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Used - {{ pool }}",
+                "metric": "ceph_pool",
+                "refId": "B",
+                "step": 60
+              },
+              {
+                "expr": "ceph_pool_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'} + ceph_pool_available_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Total - {{ pool }}",
+                "metric": "ceph_pool",
+                "refId": "C",
+                "step": 60
+              },
+              {
+                "expr": "ceph_pool_raw_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Raw - {{ pool }}",
+                "metric": "ceph_pool",
+                "refId": "D",
+                "step": 60
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Pool Storage",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "bytes",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              }
+            ]
           },
-          "lines": true,
-          "linewidth": 0,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "/^Total.*$/",
-              "fill": 0,
-              "linewidth": 4,
-              "stack": false
-            },
-            {
-              "alias": "/^Raw.*$/",
-              "color": "#BF1B00",
-              "fill": 0,
-              "linewidth": 4
-            }
-          ],
-          "span": 10,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "ceph_pool_available_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Available - {{ pool }}",
-              "metric": "ceph_pool_available_bytes",
-              "refId": "A",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Used - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "B",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'} + ceph_pool_available_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Total - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "C",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_raw_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Raw - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "D",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Pool Storage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "$datasource",
             "decimals": 2,
@@ -245,294 +247,294 @@
               }
             ],
             "valueName": "current"
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": true,
-      "title": "Pool: $pool",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "$datasource",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "height": "",
-          "id": 7,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "ceph_pool_objects_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Objects - {{ pool }}",
-              "refId": "A",
-              "step": 60
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": true,
+        "title": "Pool: $pool",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": "250px",
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "datasource": "$datasource",
+            "editable": true,
+            "error": false,
+            "fill": 1,
+            "grid": {},
+            "height": "",
+            "id": 7,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
             },
-            {
-              "expr": "ceph_pool_dirty_objects_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Dirty Objects - {{ pool }}",
-              "refId": "B",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Objects in Pool",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "connected",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "span": 6,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "ceph_pool_objects_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Objects - {{ pool }}",
+                "refId": "A",
+                "step": 60
+              },
+              {
+                "expr": "ceph_pool_dirty_objects_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Dirty Objects - {{ pool }}",
+                "refId": "B",
+                "step": 60
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Objects in Pool",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "cumulative"
             },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "$datasource",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 4,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "irate(ceph_pool_read_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Read - {{ pool }}",
-              "refId": "B",
-              "step": 60
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
             },
-            {
-              "expr": "irate(ceph_pool_write_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Write - {{ pool }}",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "IOPS",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              }
+            ]
           },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "none",
-              "label": "IOPS",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
+          {
+            "aliasColors": {},
+            "bars": false,
+            "datasource": "$datasource",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 1,
+            "grid": {},
+            "id": 4,
+            "interval": "$interval",
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": true,
+              "max": true,
+              "min": true,
+              "show": true,
+              "total": false,
+              "values": true
             },
-            {
-              "format": "short",
-              "label": "IOPS",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "$datasource",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 5,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "irate(ceph_pool_read_bytes_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Read Bytes - {{ pool }}",
-              "refId": "A",
-              "step": 60
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "connected",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "span": 6,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "irate(ceph_pool_read_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Read - {{ pool }}",
+                "refId": "B",
+                "step": 60
+              },
+              {
+                "expr": "irate(ceph_pool_write_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Write - {{ pool }}",
+                "refId": "A",
+                "step": 60
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "IOPS",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
             },
-            {
-              "expr": "irate(ceph_pool_write_bytes_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Written Bytes - {{ pool }}",
-              "refId": "B",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Throughput",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "Bps",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
             },
-            {
-              "format": "Bps",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "New row",
-      "titleSize": "h6"
-    }
-  ],
-  "schemaVersion": 14,
-  "style": "dark",
-  "tags": [
-    "ceph",
-    "pools",
-    "deepsea",
-    "SES"
+            "yaxes": [
+              {
+                "format": "none",
+                "label": "IOPS",
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "IOPS",
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": false
+              }
+            ]
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "datasource": "$datasource",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 1,
+            "grid": {},
+            "id": 5,
+            "interval": "$interval",
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": true,
+              "max": true,
+              "min": true,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "connected",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "span": 12,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "irate(ceph_pool_read_bytes_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Read Bytes - {{ pool }}",
+                "refId": "A",
+                "step": 60
+              },
+              {
+                "expr": "irate(ceph_pool_write_bytes_total{cluster='$cluster',instance='$instance',job='ceph-exporter',pool='$pool'}[3m])",
+                "interval": "$interval",
+                "intervalFactor": 1,
+                "legendFormat": "Written Bytes - {{ pool }}",
+                "refId": "B",
+                "step": 60
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Throughput",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "Bps",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "Bps",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": 0,
+                "show": true
+              }
+            ]
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "New row",
+        "titleSize": "h6"
+      }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [
+      "ceph",
+      "pools",
+      "deepsea",
+      "SES"
     ],
     "templating": {
       "list": [
@@ -551,8 +553,8 @@
           "auto_count": 10,
           "auto_min": "1m",
           "current": {
-            "text": "1m",
-            "value": "1m"
+            "text": "auto",
+            "value": "$__auto_interval"
           },
           "datasource": null,
           "hide": 0,
@@ -562,12 +564,12 @@
           "name": "interval",
           "options": [
             {
-              "selected": false,
+              "selected": true,
               "text": "auto",
               "value": "$__auto_interval"
             },
             {
-              "selected": true,
+              "selected": false,
               "text": "1m",
               "value": "1m"
             },
@@ -620,30 +622,29 @@
           "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
           "refresh": 2,
           "type": "interval"
-        },
-        {
+        },{
           "allFormat": "glob",
           "allValue": null,
           "current": {},
           "datasource": "$datasource",
           "hide": 0,
           "hideLabel": false,
-          "includeAll": false,
-          "label": "Cluster",
+          "includeAll": true,
+          "label": "Exporter Instance",
           "multi": false,
           "multiFormat": "glob",
-          "name": "cluster",
+          "name": "instance",
           "options": [],
-          "query": "ceph_health_status{job='ceph-exporter'}",
+          "query": "label_values(ceph_health_status, instance)",
           "refresh": 1,
-          "regex": ".*cluster=\"(.*?)\".*",
+          "regex": "",
           "sort": 0,
           "tagValuesQuery": "",
           "tags": [],
           "tagsQuery": "",
           "type": "query",
           "useTags": false
-        },
+        }
         {
           "allFormat": "glob",
           "allValue": null,
@@ -657,7 +658,7 @@
           "multiFormat": "glob",
           "name": "instance",
           "options": [],
-          "query": "ceph_health_status{job='ceph-exporter'}",
+          "query": "ceph_health_status{cluster='$cluster',job='ceph-exporter'}",
           "refresh": 1,
           "regex": ".*instance=\"(.*?)\".*",
           "sort": 0,
@@ -677,7 +678,7 @@
           "multi": false,
           "name": "pool",
           "options": [],
-          "query": "label_values(ceph_pool_objects_total, pool)",
+          "query": "label_values(ceph_pool_objects_total{cluster='$cluster',instance='$instance',job='ceph-exporter'}, pool)",
           "refresh": 1,
           "regex": "",
           "sort": 0,
@@ -721,4 +722,5 @@
     "timezone": "browser",
     "title": "Ceph - Pools",
     "version": 3
+  }
 }

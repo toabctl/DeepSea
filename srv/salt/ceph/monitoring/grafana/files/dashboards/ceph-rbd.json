@@ -1,149 +1,151 @@
 {
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "3.1.1"
+  "overwrite": true,
+  "dashboard": {
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "3.1.1"
+      },
+      {
+        "type": "panel",
+        "id": "graph",
+        "name": "Graph",
+        "version": ""
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "singlestat",
+        "name": "Singlestat",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": []
     },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
-    }
-  ],
-  "annotations": {
-    "list": []
-  },
-  "description": "Ceph RBD status.\r\n",
-  "editable": false,
-  "graphTooltip": 0,
-  "hideControls": false,
-  "id": null,
-  "links": [],
-  "refresh": "30s",
-  "rows": [
-    {
-      "collapse": false,
-      "height": 218,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "fill": 1,
-          "id": 1,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": null,
-          "scopedVars": {
-            "image": {
-              "selected": true,
-              "text": "bar",
-              "value": "bar"
-            }
-          },
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "ceph_rbd_image_bytes_provisioned{image=~\"$image\",pool=~\"$pool\"}",
-              "intervalFactor": 2,
-              "legendFormat": "Bytes provisioned",
-              "metric": "ceph_rbd_image_bytes_provisioned",
-              "refId": "A",
-              "step": 40
+    "description": "Ceph RBD status.\r\n",
+    "editable": false,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "id": null,
+    "links": [],
+    "refresh": "30s",
+    "rows": [
+      {
+        "collapse": false,
+        "height": 218,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "datasource": null,
+            "fill": 1,
+            "id": 1,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
             },
-            {
-              "expr": "ceph_rbd_image_bytes_used{image=~\"$image\",pool=~\"$pool\"}",
-              "intervalFactor": 2,
-              "legendFormat": "Bytes used",
-              "metric": "ceph_rbd_image_bytes_used",
-              "refId": "B",
-              "step": 40
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "RBD Stats - $image",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "repeat": null,
+            "scopedVars": {
+              "image": {
+                "selected": true,
+                "text": "bar",
+                "value": "bar"
+              }
             },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": "image",
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Ceph RBDs",
-      "titleSize": "h6"
-    }
-  ],
-  "schemaVersion": 14,
-  "style": "dark",
-  "tags": [
-    "ceph",
-    "rbd",
-    "deepsea",
-    "SES"
+            "seriesOverrides": [],
+            "span": 12,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "ceph_rbd_image_bytes_provisioned{image=~\"$image\",pool=~\"$pool\"}",
+                "intervalFactor": 2,
+                "legendFormat": "Bytes provisioned",
+                "metric": "ceph_rbd_image_bytes_provisioned",
+                "refId": "A",
+                "step": 40
+              },
+              {
+                "expr": "ceph_rbd_image_bytes_used{image=~\"$image\",pool=~\"$pool\"}",
+                "intervalFactor": 2,
+                "legendFormat": "Bytes used",
+                "metric": "ceph_rbd_image_bytes_used",
+                "refId": "B",
+                "step": 40
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "RBD Stats - $image",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "bytes",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ]
+          }
+        ],
+        "repeat": "image",
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Ceph RBDs",
+        "titleSize": "h6"
+      }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [
+      "ceph",
+      "rbd",
+      "deepsea",
+      "SES"
     ],
     "templating": {
       "list": [
@@ -162,8 +164,8 @@
           "auto_count": 10,
           "auto_min": "1m",
           "current": {
-            "text": "1m",
-            "value": "1m"
+            "text": "auto",
+            "value": "$__auto_interval"
           },
           "datasource": null,
           "hide": 0,
@@ -256,52 +258,6 @@
           "useTags": false
         },
         {
-          "allFormat": "glob",
-          "allValue": null,
-          "current": {},
-          "datasource": "$datasource",
-          "hide": 0,
-          "hideLabel": false,
-          "includeAll": false,
-          "label": "Cluster",
-          "multi": false,
-          "multiFormat": "glob",
-          "name": "cluster",
-          "options": [],
-          "query": "label_values(ceph_rbd_image_bytes_used, cluster)",
-          "refresh": 1,
-          "regex": "",
-          "sort": 0,
-          "tagValuesQuery": "",
-          "tags": [],
-          "tagsQuery": "",
-          "type": "query",
-          "useTags": false
-        },
-        {
-          "allFormat": "glob",
-          "allValue": null,
-          "current": {},
-          "datasource": "$datasource",
-          "hide": 0,
-          "hideLabel": false,
-          "includeAll": false,
-          "label": "Exporter Instance",
-          "multi": false,
-          "multiFormat": "glob",
-          "name": "instance",
-          "options": [],
-          "query": "ceph_health_status{job='ceph-exporter'}",
-          "refresh": 1,
-          "regex": ".*instance=\"(.*?)\".*",
-          "sort": 0,
-          "tagValuesQuery": "",
-          "tags": [],
-          "tagsQuery": "",
-          "type": "query",
-          "useTags": false
-        },
-        {
           "allValue": null,
           "current": {},
           "datasource": "$datasource",
@@ -355,4 +311,5 @@
     "timezone": "browser",
     "title": "Ceph - RBD",
     "version": 3
+  }
 }

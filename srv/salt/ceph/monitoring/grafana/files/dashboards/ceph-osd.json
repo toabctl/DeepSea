@@ -1,4 +1,6 @@
-  {
+{
+  "overwrite": true,
+  "dashboard": {
     "__requires": [
       {
         "type": "grafana",
@@ -75,7 +77,7 @@
               }
             ],
             "maxDataPoints": 100,
-            "nullPointMode": "connected",
+            "nullPointMode": "null",
             "nullText": null,
             "postfix": "",
             "postfixFontSize": "50%",
@@ -144,12 +146,12 @@
               "values": true
             },
             "lines": true,
-            "linewidth": 2,
+            "linewidth": 1,
             "links": [],
-            "nullPointMode": "connected",
+            "nullPointMode": "null",
             "percentage": false,
-            "pointradius": 5,
-            "points": false,
+            "pointradius": 1,
+            "points": true,
             "renderer": "flot",
             "seriesOverrides": [
               {
@@ -163,7 +165,7 @@
             "steppedLine": false,
             "targets": [
               {
-                "expr": "ceph_osd_pgs{osd=~'$osd'}",
+                "expr": "ceph_osd_pgs{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                 "interval": "$interval",
                 "intervalFactor": 1,
                 "legendFormat": "Number of PGs - {{ osd }}",
@@ -252,9 +254,9 @@
               "values": true
             },
             "lines": false,
-            "linewidth": 2,
+            "linewidth": 1,
             "links": [],
-            "nullPointMode": "connected",
+            "nullPointMode": "null",
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -265,7 +267,7 @@
             "steppedLine": false,
             "targets": [
               {
-                "expr": "ceph_osd_variance{osd=~'$osd'}",
+                "expr": "ceph_osd_variance{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                 "interval": "$interval",
                 "intervalFactor": 1,
                 "legendFormat": "{{ osd }}",
@@ -344,9 +346,9 @@
               "values": true
             },
             "lines": false,
-            "linewidth": 2,
+            "linewidth": 1,
             "links": [],
-            "nullPointMode": "connected",
+            "nullPointMode": "null",
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -357,7 +359,7 @@
             "steppedLine": false,
             "targets": [
               {
-                "expr": "ceph_osd_perf_apply_latency_seconds{osd=~'$osd'}",
+                "expr": "ceph_osd_perf_apply_latency_seconds{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                 "interval": "$interval",
                 "intervalFactor": 1,
                 "legendFormat": "Apply Latency (s) - {{ osd }}",
@@ -365,7 +367,7 @@
                 "step": 60
               },
               {
-                "expr": "ceph_osd_perf_commit_latency_seconds{osd=~'$osd'}",
+                "expr": "ceph_osd_perf_commit_latency_seconds{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                 "interval": "$interval",
                 "intervalFactor": 1,
                 "legendFormat": "Commit Latency (s) - {{ osd }}",
@@ -415,18 +417,25 @@
               "type": "graph",
               "targets": [
                   {
-                      "expr": "ceph_osd_avail_bytes{osd=~'$osd'}",
+                      "expr": "ceph_osd_avail_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                       "intervalFactor": 2,
                       "refId": "A",
                       "step": 120,
                       "legendFormat": "Available - {{osd}}"
                   },
                   {
-                      "expr": "ceph_osd_used_bytes{osd=~'$osd'}",
+                      "expr": "ceph_osd_used_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
                       "intervalFactor": 2,
                       "refId": "B",
                       "step": 120,
                       "legendFormat": "Used - {{osd}}"
+                  },
+                  {
+                      "expr": "ceph_osd_bytes{cluster='$cluster',instance='$instance',job='ceph-exporter', osd='$osd'}",
+                      "intervalFactor": 2,
+                      "refId": "C",
+                      "step": 120,
+                      "legendFormat": "Total - {{osd}}"
                   }
               ],
               "datasource": null,
@@ -458,10 +467,10 @@
               "lines": true,
               "fill": 1,
               "linewidth": 1,
-              "points": false,
-              "pointradius": 5,
+              "points": true,
+              "pointradius": 1,
               "bars": false,
-              "stack": false,
+              "stack": true,
               "percentage": false,
               "legend": {
                   "show": true,
@@ -521,8 +530,8 @@
           "auto_count": 10,
           "auto_min": "1m",
           "current": {
-            "text": "1m",
-            "value": "1m"
+            "text": "auto",
+            "value": "$__auto_interval"
           },
           "datasource": null,
           "hide": 0,
@@ -532,12 +541,12 @@
           "name": "interval",
           "options": [
             {
-              "selected": false,
+              "selected": true,
               "text": "auto",
               "value": "$__auto_interval"
             },
             {
-              "selected": true,
+              "selected": false,
               "text": "1m",
               "value": "1m"
             },
@@ -598,38 +607,15 @@
           "datasource": "$datasource",
           "hide": 0,
           "hideLabel": false,
-          "includeAll": false,
-          "label": "Cluster",
-          "multi": false,
-          "multiFormat": "glob",
-          "name": "cluster",
-          "options": [],
-          "query": "ceph_health_status{job='ceph-exporter'}",
-          "refresh": 1,
-          "regex": ".*cluster=\"(.*?)\".*",
-          "sort": 0,
-          "tagValuesQuery": "",
-          "tags": [],
-          "tagsQuery": "",
-          "type": "query",
-          "useTags": false
-        },
-        {
-          "allFormat": "glob",
-          "allValue": null,
-          "current": {},
-          "datasource": "$datasource",
-          "hide": 0,
-          "hideLabel": false,
-          "includeAll": false,
+          "includeAll": true,
           "label": "Exporter Instance",
           "multi": false,
           "multiFormat": "glob",
           "name": "instance",
           "options": [],
-          "query": "ceph_health_status{job='ceph-exporter'}",
+          "query": "label_values(ceph_health_status, instance)",
           "refresh": 1,
-          "regex": ".*instance=\"(.*?)\".*",
+          "regex": "",
           "sort": 0,
           "tagValuesQuery": "",
           "tags": [],
@@ -647,7 +633,7 @@
           "multi": false,
           "name": "osd",
           "options": [],
-          "query": "label_values(ceph_osd_up, osd)",
+          "query": "label_values(ceph_osd_metadata{instance='$instance'}, id)",
           "refresh": 1,
           "regex": "",
           "sort": 3,
@@ -692,3 +678,4 @@
     "title": "Ceph - OSD",
     "version": 3
   }
+}
