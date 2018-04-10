@@ -193,7 +193,7 @@ class Proposal(object):
         return filtered
 
 
-    def _device(drive):
+    def _device(self, drive):
         """
         Default to Device File value.  Prefer most descriptive.
         """
